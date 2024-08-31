@@ -1,12 +1,14 @@
-﻿namespace Kurama
-{
-    public partial class App : Application
-    {
-        public App()
-        {
-            InitializeComponent();
+﻿using Kurama.Services;
+using Kurama.ViewModels;
 
-            MainPage = new AppShell();
-        }
+namespace Kurama;
+
+public partial class App : Application
+{
+    public App()
+    {
+        InitializeComponent();
+
+        MainPage = new AppShell();
     }
 }
