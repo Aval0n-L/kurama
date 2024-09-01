@@ -1,4 +1,5 @@
-﻿using Kurama.Services;
+﻿using CommunityToolkit.Maui;
+using Kurama.Services;
 using Kurama.Services.Interfaces;
 using Kurama.ViewModels;
 using Microsoft.Extensions.Logging;
@@ -12,6 +13,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -19,10 +21,13 @@ public static class MauiProgram
             });
 
 
+        builder.Services.AddSingleton<IGlossaryService, GlossaryService>();
         builder.Services.AddSingleton<ISpeechRecognitionService, SpeechRecognitionService>();
         builder.Services.AddSingleton<ISpeechSynthesisService, SpeechSynthesisService>();
+
         builder.Services.AddSingleton<VoiceAssistantViewModel>();
-        builder.Services.AddSingleton<MainPage>();
+
+        builder.Services.AddTransient<MainPage>();
 
 
 #if DEBUG

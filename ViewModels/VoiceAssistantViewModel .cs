@@ -1,71 +1,84 @@
-﻿using Kurama.Services.Interfaces;
-using System.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Kurama.Services.Interfaces;
 
 namespace Kurama.ViewModels;
 
-public class VoiceAssistantViewModel : INotifyPropertyChanged
+public partial class VoiceAssistantViewModel : ObservableObject
 {
     private readonly ISpeechRecognitionService _speechRecognitionService;
     private readonly ISpeechSynthesisService _speechSynthesisService;
+    private readonly IGlossaryService _glossaryService;
 
-    private bool _isListening;
+    [ObservableProperty]
+    private string? _recognitionText;
 
     public VoiceAssistantViewModel(
         ISpeechRecognitionService speechRecognitionService, 
-        ISpeechSynthesisService speechSynthesisService)
+        ISpeechSynthesisService speechSynthesisService,
+        IGlossaryService glossaryService)
     {
         _speechRecognitionService = speechRecognitionService;
         _speechSynthesisService = speechSynthesisService;
+        _glossaryService = glossaryService;
 
         _speechRecognitionService.OnSpeechRecognized += HandleSpeechRecognized;
-
-        StartListening();
-    }
-
-    public bool IsListening
-    {
-        get => _isListening;
-        set
-        {
-            _isListening = value;
-            OnPropertyChanged(nameof(IsListening));
-        }
     }
 
     private async void HandleSpeechRecognized(string recognizedText)
     {
-        if (recognizedText.Equals("start", StringComparison.OrdinalIgnoreCase))
+//        RecognitionText = string.Empty;
+
+        var glossary = await _glossaryService.GetGlossaryAsync();
+        
+        switch (recognizedText)
         {
-            IsListening = true;
-            await _speechSynthesisService.SpeakAsync("Listening started");
-        }
-        else if (recognizedText.Equals("stop", StringComparison.OrdinalIgnoreCase))
-        {
-            IsListening = false;
-            await _speechSynthesisService.SpeakAsync("Listening stopped");
-            StopListening();
-        }
-        else if (IsListening)
-        {
-            // Process the recognized command
-            await _speechSynthesisService.SpeakAsync($"You said: {recognizedText}");
+            case "Hello":
+            case "Stop Talking":
+            case "Stop Listening":
+                _speechSynthesisService.SpeakViaGlossaryAsync(recognizedText, glossary);
+                RecognitionText += recognizedText + "   ";
+                break;
+
+            default:
+                await _speechSynthesisService.SpeakAsync("I don't understand you, please repeat");
+                RecognitionText += recognizedText + "   ";
+                break;
         }
     }
 
+    [RelayCommand]
+    public async Task TestText()
+    {
+        RecognitionText = string.Empty;
+        var recognizedText = "I don't understand you, please repeat";
+        await _speechSynthesisService.SpeakAsync(recognizedText);
+        RecognitionText += recognizedText + "   ";
+    }
+
+
+    [ObservableProperty]
+    private bool _isReady;
+    private bool CanStartListening() => _isReady;
+    private bool CanStopListening() => !_isReady;
+
+    [RelayCommand(CanExecute = nameof(CanStartListening))]
     public void StartListening()
     {
         _speechRecognitionService.StartRecognition();
+        _isReady = false;
+
+        StopListeningCommand.NotifyCanExecuteChanged();
+        StartListeningCommand.NotifyCanExecuteChanged();
     }
 
+    [RelayCommand(CanExecute = nameof(CanStopListening))]
     public void StopListening()
     {
         _speechRecognitionService.StopRecognition();
-    }
+        _isReady = true;
 
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected virtual void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        StopListeningCommand.NotifyCanExecuteChanged();
+        StartListeningCommand.NotifyCanExecuteChanged();
     }
 }

@@ -1,0 +1,53 @@
+[
+  {
+    "Key": "Kurama",
+    "Value": [ "Yes my friend", "I am here", "Yes" ]
+  },
+  {
+    "Key": "Wake up",
+    "Value": [ "I am here" ]
+  },
+  {
+    "Key": "Hello",
+    "Value": [ "Hello", "Greetings my friend", "Welcome", "Hey! I miss you", "Wake up, Sumarai!" ]
+  },
+
+  {
+    "Key": "Play Music",
+    "Value": [ "okay" ]
+  },
+  {
+    "Key": "Stop Music",
+    "Value": [ "okay" ]
+  },
+  {
+    "Key": "Weekend Time",
+    "Value": [ "okay" ]
+  },
+  {
+    "Key": "Solo Leveling",
+    "Value": [ "enjoy" ]
+  },
+
+  {
+    "Key": "Free Time",
+    "Value": [ "Have a good day" ]
+  },
+
+  {
+    "Key": "Lock Screen",
+    "Value": [ "See you." ]
+  },
+  {
+    "Key": "Sleep",
+    "Value": [ "Good night." ]
+  },
+  {
+    "Key": "Stop Talking",
+    "Value": [ "I am sorry, I will be quiet." ]
+  },
+  {
+    "Key": "Stop Listening",
+    "Value": [ "If you need me just ask." ]
+  }
+]

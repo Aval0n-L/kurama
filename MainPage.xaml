@@ -1,8 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Kurama.MainPage">
+             xmlns:controls="clr-namespace:Kurama.Controls"
+             xmlns:viewModels="clr-namespace:Kurama.ViewModels"
+             x:Class="Kurama.MainPage"
+             x:DataType="viewModels:VoiceAssistantViewModel">
 
+    <Grid>
 
+        <!--<controls:Voice x:Name="AudioVisualizer"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        WidthRequest="400"
+                        HeightRequest="200" />-->
+
+        <HorizontalStackLayout 
+            Spacing="25"
+            Padding="30,0"
+            HorizontalOptions="Center"
+            VerticalOptions="End">
+
+            <Label
+                Text="{Binding RecognitionText}"
+                FontSize="18"
+                HorizontalOptions="Center" />
+
+            <Button
+                Text="Default"
+                Command="{Binding TestTextCommand}"
+                HorizontalOptions="Center" />
+
+            <Button
+                Text="Listen"
+                Command="{Binding StartListeningCommand}"
+                HorizontalOptions="Start" />
+
+            <Button
+                Text="Listen Cancel"
+                Command="{Binding StopListeningCommand}"
+                HorizontalOptions="End" />
+
+        </HorizontalStackLayout>
+    </Grid>
 
 </ContentPage>

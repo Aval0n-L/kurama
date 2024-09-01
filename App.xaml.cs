@@ -1,7 +1,4 @@
-﻿using Kurama.Services;
-using Kurama.ViewModels;
-
-namespace Kurama;
+﻿namespace Kurama;
 
 public partial class App : Application
 {

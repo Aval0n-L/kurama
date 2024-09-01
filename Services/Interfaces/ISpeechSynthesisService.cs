@@ -1,7 +1,11 @@
-﻿namespace Kurama.Services.Interfaces;
+﻿using Kurama.Models;
+
+namespace Kurama.Services.Interfaces;
 
 public interface ISpeechSynthesisService
 {
     Task SpeakAsync(string text);
-    Task SpeakAsyncCancelAll();
+    void SpeakViaGlossaryAsync(string text, IEnumerable<Glossary> glossary);
+
+    //event Action<double[]> OnAmplitudeChanged;
 }

@@ -1,8 +1,14 @@
 ﻿namespace Kurama.Services.Interfaces;
 
+
+/// <summary>
+/// Service to work with Speech-To-Text
+/// </summary>
 public interface ISpeechRecognitionService
 {
-    event Action<string> OnSpeechRecognized;
+    Task InitializeAsync();
     void StartRecognition();
     void StopRecognition();
+
+    event Action<string> OnSpeechRecognized;
 }
